@@ -1,4 +1,4 @@
-# Angular Tutorial Practice 🚀
+# Angular Tutorial 🚀
 
 This repository contains my **Angular learning and practice work** created while following online Angular tutorials.
 
