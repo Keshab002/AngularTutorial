@@ -27,14 +27,15 @@ The purpose of this repo is **learning by doing**, not building a production-rea
 
 ## 📂 Project Structure
 
+```
 Typescript/
-├── Classes.ts # Classes, inheritance, access modifiers
-├── datatypes.ts # Core TypeScript data types & functions
-├── Interface.ts # Interfaces, destructuring, decorators
-├── package.json # Project dependencies
-├── tsconfig.json # TypeScript compiler configuration
-└── .github/
-
+├── Classes.ts
+├── datatypes.ts
+├── Interface.ts
+├── package.json
+├── tsconfig.json
+└── .github
+```
 
 ---
 
