@@ -1,0 +1,45 @@
+<h1>{{title}}</h1>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Sr. No.</th>
+      <th>Even/Odd</th>
+      <th>Room Number</th>
+      <th>Type</th>
+      <th>Price</th>
+      <th>Photos</th>
+      <th>Amenities</th>
+      <th>Checkin Time</th>
+      <th>Checkout Time</th>
+      <th>Rating</th>
+      <th>Room Selection</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- 6.SlicePipe -> mostly not suggested -->
+    <!-- @for(room of roomlist | slice : 0:3; track room.roomNumber; let e = $even; let o = $odd; ) { -->
+    @for(room of roomlist; track room.roomNumber; let e = $even; let o = $odd; ) {
+    <tr [ngClass]="e ? 'even' : 'odd'">
+      <!-- 5.PercentagePipe -->
+      <td>{{ $index + 1 | percent }}</td>
+      <td>{{ o ? 'Odd' : 'Even' }}</td>
+      <td>{{ room.roomNumber }}</td>
+      <td>{{ room.roomType }}</td>
+      <!-- Built-in Pipes -->
+      <!-- Pipes -->
+      <!-- 3.CurrencyPipe -->
+      <td>{{ room.price | currency : 'INR' }}</td>
+      <td><img [src]="room.photos" alt="Room Photo" width="100" /></td>
+      <!-- 2. LowercasePipe -->
+      <td>{{ room.amenities | lowercase }}</td>
+      <!-- 1. DatePipe -->
+      <td>{{ room.checkinTime | date : 'short' }}</td>
+      <td>{{ room.checkoutTime | date : 'short' }}</td>
+      <!-- 7. NumberPipe -->
+      <td>{{ room.rating | number : '1.1-2' }}</td>
+      <td>
+        <button class="btn btn-primary" (click)="onChildSelectRoom(room)">Select Room</button>
+    </tr>
+    }
+  </tbody>
+</table>

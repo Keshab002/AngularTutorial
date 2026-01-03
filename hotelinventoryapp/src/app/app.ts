@@ -1,11 +1,13 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, AfterViewInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Rooms } from "./rooms/rooms";
 import { CommonModule } from '@angular/common';
+import { Container } from "./container/container";
+import { Employee } from "./employee/employee";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Rooms, CommonModule],
+  imports: [RouterOutlet, CommonModule, Rooms, Container, Employee],
   templateUrl: './app.html',
   // Alternatively, you can use inline template
   // template: `<h1>Hello World</h1>
@@ -21,7 +23,14 @@ import { CommonModule } from '@angular/common';
   //   }
   // `],
 })
-export class App {
+export class App implements AfterViewInit {
   protected readonly title = signal('hotelinventoryapp');
   role : string = 'admin';
+
+  // @ViewChild('admin', {read: ViewContainerRef}) adminContainer!: ViewContainerRef;
+
+  ngAfterViewInit(): void {
+    // const componentRef = this.adminContainer.createComponent(Rooms);
+    // componentRef.instance.hotelName = "Dynamically Loaded Hotel";
+  }
 }
