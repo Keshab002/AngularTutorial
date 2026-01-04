@@ -1,11 +1,13 @@
-import { AfterContentInit, Component, ContentChild, contentChild, OnInit } from '@angular/core';
+import { AfterContentInit, Component, ContentChild, contentChild, Host, OnInit } from '@angular/core';
 import { Employee } from '../employee/employee';
+import { RoomService } from '../rooms/roomService/room-service';
 
 @Component({
   selector: 'app-container',
   imports: [],
   templateUrl: './container.html',
   styleUrl: './container.scss',
+  providers: [RoomService],
 })
 export class Container implements AfterContentInit {
   @ContentChild(Employee) employeeComponent!: Employee;
@@ -15,6 +17,12 @@ export class Container implements AfterContentInit {
   // ngOnInit() {
   //   console.log(this.employeeComponent, 'from container (undefined because static is false)');
   // }
+
+  constructor(@Host() private roomService : RoomService) {}
+  // @Host() is used to get the instance of RoomService from the host component's injector
+  // This ensures that we are using the RoomService instance provided at the Container component level
+  // This is useful when we want to ensure that the service instance is shared across the Container and its projected content
+  // In this case, it ensures that the RoomService instance is the same for both Container and Employee components
 
   ngAfterContentInit(): void {
     this.employeeComponent.employeeName = 'Jane Smith';

@@ -28,11 +28,15 @@
   [roomlist]="roomlist"
   (selectedRoom)="OnSelectRoom($event)"
   [title]="title"
+  (deleteRoom)="deleteRoom($event)"
 ></app-roomlist-component>
 }
 
 <div>
   <button class="btn btn-primary" (click)="onAddRoom()">Add Room</button>
+</div>
+<div>
+  <button class="btn btn-success" (click)="editRoom()">Edit Room 1</button>
 </div>
 <div>
   {{ selectedRoom | json }}

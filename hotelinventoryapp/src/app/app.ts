@@ -1,9 +1,11 @@
-import { Component, signal, AfterViewInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, signal, AfterViewInit, ViewChild, ViewContainerRef, OnInit, Optional, Inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Rooms } from "./rooms/rooms";
 import { CommonModule } from '@angular/common';
 import { Container } from "./container/container";
 import { Employee } from "./employee/employee";
+import { Logger } from './logger';
+import { localstorageToken } from './localstorage.token';
 
 @Component({
   selector: 'app-root',
@@ -23,9 +25,22 @@ import { Employee } from "./employee/employee";
   //   }
   // `],
 })
-export class App implements AfterViewInit {
+export class App implements OnInit, AfterViewInit {
   protected readonly title = signal('hotelinventoryapp');
   role : string = 'admin';
+
+  constructor(@Optional() private loggerService: Logger,@Inject(localstorageToken) private localstorage: Storage) {}
+  // Using @Optional() to handle the case where Logger service might not be provided
+  // This prevents Angular from throwing an error if the service is not found
+  // Instead, loggerService will be null if Logger is not provided
+
+  ngOnInit() {
+    this.loggerService?.log('App component initialized');
+    this.localstorage?.setItem('role', this.role);
+    // Using the injected localstorageToken to access localStorage
+    // we can use diredct localStorage as well but using InjectionToken makes it more testable and flexible
+
+  }
 
   // @ViewChild('admin', {read: ViewContainerRef}) adminContainer!: ViewContainerRef;
 

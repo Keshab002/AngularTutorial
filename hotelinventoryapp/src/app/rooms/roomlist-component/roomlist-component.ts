@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -24,16 +25,23 @@ import { CommonModule, NgClass } from '@angular/common';
 export class RoomlistComponent implements OnChanges, OnDestroy {
   @Input() roomlist: RoomList[] = [];
   @Output() selectedRoom = new EventEmitter<RoomList>();
+  @Output() deleteRoom = new EventEmitter<string>();
   @Input() title: string = '';
 
+  constructor(private cdr: ChangeDetectorRef) {}
   onChildSelectRoom(room: RoomList) {
     this.selectedRoom.emit(room);
+  }
+
+  onChildDeleteRoom(roomNumber: string) {
+    this.deleteRoom.emit(roomNumber);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     // if (changes['title'].firstChange === false) {
     //   this.title = changes['title'].currentValue.toUpperCase();
     // }
+    this.cdr.detectChanges();
   }
 
   ngOnDestroy(): void {
