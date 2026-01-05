@@ -350,7 +350,6 @@
 <!-- Dynamic Loading of Component -->
 <!-- <ng-template #admin></ng-template> -->
 
-
 <!-- ng-content enables content projection in Angular, allowing a component to display content passed from its parent. -->
 <!-- The parent places elements inside the component tag, and Angular renders them where <ng-content> appears. -->
 <!-- Using the select attribute, you can create multiple projection slots for specific elements. -->
@@ -358,8 +357,13 @@
 <!-- It helps separate layout (child component) from content (parent component), making components reusable and flexible. -->
 <app-container>
   <app-rooms></app-rooms>
-  <h1>Hello, I am writing from ng-content, <br> And the order in which it is displaying this is set on app-container component</h1>
+  <h1>
+    Hello, I am writing from ng-content, <br />
+    And the order in which it is displaying this is set on app-container component
+  </h1>
 
   <app-employee></app-employee>
 </app-container>
+<app-rooms></app-rooms>
+
 <router-outlet />

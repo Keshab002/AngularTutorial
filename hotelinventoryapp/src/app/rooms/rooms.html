@@ -23,7 +23,7 @@
 @if(!hideRooms) {
 <div>Available Rooms: {{ rooms.availableRooms }}</div>
 <!-- <div> RoomList : {{ roomlist }}</div> -->
- <!-- Now this component is getting removed and we can see its effect on ngDestroy that is implemented in RoomListComponent -->
+<!-- Now this component is getting removed and we can see its effect on ngDestroy that is implemented in RoomListComponent -->
 <app-roomlist-component
   [roomlist]="roomlist"
   (selectedRoom)="OnSelectRoom($event)"
@@ -43,3 +43,24 @@
 </div>
 <!-- 4. JsonPipe -->
 <!-- {{ roomlist | json }} -> should be used specifically for debugging purposes -->
+
+<div>
+  <h3>File Download Progress</h3>
+  <p>Total Bytes Downloaded: {{ totalBytes }} bytes</p>
+</div>
+
+<!-- 5. AsyncPipe -->
+@let data = roomData$ | async; @if(data) {
+<div>
+  <h3>Room List (Using Async Pipe)</h3>
+  <pre>{{ data | json }}</pre>
+</div>
+}
+
+<!-- Error Message Display -->
+@let error = getError$ | async; @if(error) {
+<div class="error">
+  <h3>Error:</h3>
+  <p>{{ error }}</p>
+</div>
+}

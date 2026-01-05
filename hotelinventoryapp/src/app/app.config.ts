@@ -1,9 +1,11 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { APP_CONFIG, APP_SERVICE_CONFIG } from './AppConfig/appconfig.service';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { requestInterceptor } from './request-interceptor';
+import { Init } from './init';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,6 +15,9 @@ export const appConfig: ApplicationConfig = {
       provide: APP_SERVICE_CONFIG,
       useValue: APP_CONFIG,
     },
-    provideHttpClient(),
+    provideAppInitializer(()=>{
+      return inject(Init).init();
+    }),
+    provideHttpClient(withInterceptors([requestInterceptor])),
   ],
 };

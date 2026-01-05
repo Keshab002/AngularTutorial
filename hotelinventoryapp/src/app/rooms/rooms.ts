@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  OnDestroy,
   OnInit,
   SkipSelf,
   ViewChild,
@@ -13,6 +14,8 @@ import { CommonModule } from '@angular/common';
 import { RoomlistComponent } from './roomlist-component/roomlist-component';
 import { Header } from '../header/header';
 import { RoomService } from './roomService/room-service';
+import { HttpEventType } from '@angular/common/http';
+import { catchError, Observable, shareReplay, Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-rooms',
@@ -20,7 +23,7 @@ import { RoomService } from './roomService/room-service';
   styleUrl: './rooms.scss',
   imports: [CommonModule, RoomlistComponent, Header],
 })
-export class Rooms implements OnInit, AfterViewInit, AfterViewChecked {
+export class Rooms implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy {
   hotelName: string = 'Angular Inn';
   numberOfRooms: number = 50;
   hideRooms: boolean = false;
@@ -33,6 +36,11 @@ export class Rooms implements OnInit, AfterViewInit, AfterViewChecked {
   };
 
   roomlist: RoomList[] = [];
+  percentageDone: number = 0;
+  totalBytes: number = 0;
+  subscription!: Subscription;
+  roomData$!: Observable<RoomList[]>;
+  getError$ = new Subject<string>();
 
   // What is Dependency Injection?
   // Dependency Injection (DI) is a design pattern used in Angular to manage the dependencies of components and services.
@@ -41,6 +49,12 @@ export class Rooms implements OnInit, AfterViewInit, AfterViewChecked {
   // Here dependency is RoomService which is being injected into Rooms component
   constructor(@SkipSelf() private roomService: RoomService, private cdr: ChangeDetectorRef) {
     console.log('Zone enabled:', typeof (window as any).Zone !== 'undefined');
+    this.roomData$ = this.roomService.getRoomList$.pipe(
+      catchError((error) => {
+        this.getError$.next(error.message);
+        throw error;
+      })
+    );
   }
   // @SkipSelf() is used to tell Angular to look for the dependency in the parent injector
   // This is useful when we want to avoid circular dependencies or when we want to ensure that a service is shared across multiple components
@@ -74,9 +88,35 @@ export class Rooms implements OnInit, AfterViewInit, AfterViewChecked {
   ngOnInit() {
     // Lifecycle hook - runs when component is initialized
     console.log(this.headerComponent, 'from ngOnInit');
-    this.roomService.getRoomList().subscribe((rooms) => {
-      console.log(rooms, 'rooms data from service');
-      this.roomlist = rooms;
+
+    // this.roomService.getRoomList().subscribe((rooms) => {
+    //   console.log(rooms, 'rooms data from service');
+    //   this.roomlist = [...rooms];
+    //   // this.cdr.markForCheck();
+    // });
+    this.roomService.getRoomList$.subscribe((rooms) => {
+      console.log(rooms, 'rooms data from service using getRoomList$ observable');
+      this.roomlist = [...rooms];
+      // this.cdr.markForCheck();
+    });
+
+    this.subscription = this.roomService.getPhotos().subscribe((event) => {
+      console.log(event, 'from getPhotos');
+      switch (event.type) {
+        case HttpEventType.Sent:
+          console.log('Request sent!');
+          break;
+        case HttpEventType.ResponseHeader:
+          console.log('Response header received!');
+          break;
+        case HttpEventType.DownloadProgress:
+          this.totalBytes += event.loaded;
+          console.log(`Downloaded ${this.totalBytes} bytes so far`);
+          break;
+        case HttpEventType.Response:
+          console.log('Response fully received!', event.body);
+          break;
+      }
       this.cdr.markForCheck();
     });
   }
@@ -129,5 +169,12 @@ export class Rooms implements OnInit, AfterViewInit, AfterViewChecked {
       this.roomlist = [...rooms];
       this.cdr.markForCheck();
     });
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe from the subscription to prevent memory leaks
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

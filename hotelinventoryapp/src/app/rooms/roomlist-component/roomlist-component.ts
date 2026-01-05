@@ -41,7 +41,6 @@ export class RoomlistComponent implements OnChanges, OnDestroy {
     // if (changes['title'].firstChange === false) {
     //   this.title = changes['title'].currentValue.toUpperCase();
     // }
-    this.cdr.detectChanges();
   }
 
   ngOnDestroy(): void {

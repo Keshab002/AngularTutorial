@@ -7,7 +7,10 @@ import { RoomService } from '../rooms/roomService/room-service';
   imports: [],
   templateUrl: './container.html',
   styleUrl: './container.scss',
-  providers: [RoomService],
+  // providers: [RoomService],
+  // We comment out the providers array to use the RoomService instance provided in the root injector
+  // because we want to share the same instance across the entire application
+  // and to check the shareReplay functionality in RoomService
 })
 export class Container implements AfterContentInit {
   @ContentChild(Employee) employeeComponent!: Employee;
@@ -18,7 +21,8 @@ export class Container implements AfterContentInit {
   //   console.log(this.employeeComponent, 'from container (undefined because static is false)');
   // }
 
-  constructor(@Host() private roomService : RoomService) {}
+  constructor() {}
+  // constructor(@Host() private roomService : RoomService) {}
   // @Host() is used to get the instance of RoomService from the host component's injector
   // This ensures that we are using the RoomService instance provided at the Container component level
   // This is useful when we want to ensure that the service instance is shared across the Container and its projected content

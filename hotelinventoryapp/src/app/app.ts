@@ -6,6 +6,7 @@ import { Container } from "./container/container";
 import { Employee } from "./employee/employee";
 import { Logger } from './logger';
 import { localstorageToken } from './localstorage.token';
+import { Init } from './init';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +30,10 @@ export class App implements OnInit, AfterViewInit {
   protected readonly title = signal('hotelinventoryapp');
   role : string = 'admin';
 
-  constructor(@Optional() private loggerService: Logger,@Inject(localstorageToken) private localstorage: Storage) {}
+  constructor(@Optional() private loggerService: Logger,@Inject(localstorageToken) private localstorage: Storage, private initService: Init) 
+  {
+    console.log(initService.config, 'App component - config from Init service');
+  }
   // Using @Optional() to handle the case where Logger service might not be provided
   // This prevents Angular from throwing an error if the service is not found
   // Instead, loggerService will be null if Logger is not provided
