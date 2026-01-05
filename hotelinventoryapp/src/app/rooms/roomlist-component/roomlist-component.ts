@@ -11,10 +11,11 @@ import {
 } from '@angular/core';
 import { RoomList } from '../roomProperties';
 import { CommonModule, NgClass } from '@angular/common';
+import { RouterLink, RouterLinkWithHref } from "@angular/router";
 
 @Component({
   selector: 'app-roomlist-component',
-  imports: [NgClass, CommonModule],
+  imports: [NgClass, CommonModule, RouterLinkWithHref],
   templateUrl: './roomlist-component.html',
   styleUrl: './roomlist-component.scss',
   // this is to optimize performance by reducing unnecessary change detection cycles

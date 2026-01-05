@@ -1,4 +1,4 @@
-<h1>{{title}}</h1>
+<h1>{{ title }}</h1>
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
@@ -39,10 +39,14 @@
       <!-- 7. NumberPipe -->
       <td>{{ room.rating | number : '1.1-2' }}</td>
       <td>
-        <button class="btn btn-primary" (click)="onChildSelectRoom(room)">Select Room</button>
+        <button class="btn btn-primary" [routerLink]="['/rooms', room.roomNumber]">
+          Select Room
+        </button>
       </td>
       <td>
-        <button class="btn btn-danger" (click)="onChildDeleteRoom(room.roomNumber!)">Delete Room</button>
+        <button class="btn btn-danger" (click)="onChildDeleteRoom(room.roomNumber!)">
+          Delete Room
+        </button>
       </td>
     </tr>
     }

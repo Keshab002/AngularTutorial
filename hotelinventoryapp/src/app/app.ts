@@ -1,5 +1,5 @@
 import { Component, signal, AfterViewInit, ViewChild, ViewContainerRef, OnInit, Optional, Inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterLinkWithHref } from '@angular/router';
 import { Rooms } from "./rooms/rooms";
 import { CommonModule } from '@angular/common';
 import { Container } from "./container/container";
@@ -7,10 +7,12 @@ import { Employee } from "./employee/employee";
 import { Logger } from './logger';
 import { localstorageToken } from './localstorage.token';
 import { Init } from './init';
+import { NavigationComponent } from "./navigation/navigation.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, Rooms, Container, Employee],
+  imports: [CommonModule, NavigationComponent],
+    // Rooms, Container, Employee],
   templateUrl: './app.html',
   // Alternatively, you can use inline template
   // template: `<h1>Hello World</h1>

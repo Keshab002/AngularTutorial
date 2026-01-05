@@ -355,7 +355,9 @@
 <!-- Using the select attribute, you can create multiple projection slots for specific elements. -->
 <!-- A plain <ng-content> acts as a default slot for all unmatched content. -->
 <!-- It helps separate layout (child component) from content (parent component), making components reusable and flexible. -->
-<app-container>
+
+<!-- Commented Out due to checking routing options -->
+<!-- <app-container>
   <app-rooms></app-rooms>
   <h1>
     Hello, I am writing from ng-content, <br />
@@ -364,6 +366,14 @@
 
   <app-employee></app-employee>
 </app-container>
-<app-rooms></app-rooms>
+<app-rooms></app-rooms> -->
 
-<router-outlet />
+
+ <!-- <div style="display: flex; gap: 20px;">
+   <a [routerLink]="'rooms'">Go to Rooms</a>
+   
+   <a [routerLink]="'employees'">Go to Employees</a>
+ </div> -->
+<!-- Dont use href as it will result in whole page loading which destroys the meaning of single page application -->
+
+<app-navigation></app-navigation>

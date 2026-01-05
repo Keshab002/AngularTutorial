@@ -1,0 +1,48 @@
+{{ newRoom | json }}
+<div class="alert alert-success" role="alert">
+  {{ message }}
+</div>
+<form (ngSubmit)="addRoom($event)">
+  <label for="roomNumber">Room Number</label>
+  <input type="text" id="roomNumber" [(ngModel)]="newRoom.roomNumber" name="roomNumber" />
+
+  <label for="roomType">Room Type</label>
+  <input type="text" id="roomType" [(ngModel)]="newRoom.roomType" name="roomType" />
+
+  <label for="amenities">Amenities</label>
+  <textarea id="amenities" [(ngModel)]="newRoom.amenities" name="amenities" rows="3"></textarea>
+
+  <label for="price">Price</label>
+  <input type="number" id="price" [(ngModel)]="newRoom.price" name="price" />
+
+  <label for="photos">Photo URL</label>
+  <input type="url" id="photos" [(ngModel)]="newRoom.photos" name="photos" />
+  <label for="checkinTime">Check-in Time</label>
+  <input
+    type="datetime-local"
+    id="checkinTime"
+    [(ngModel)]="newRoom.checkinTime"
+    name="checkinTime"
+  />
+
+  <label for="checkoutTime">Check-out Time</label>
+  <input
+    type="datetime-local"
+    id="checkoutTime"
+    [(ngModel)]="newRoom.checkoutTime"
+    name="checkoutTime"
+  />
+
+  <label for="rating">Rating</label>
+  <input
+    type="number"
+    id="rating"
+    [(ngModel)]="newRoom.rating"
+    name="rating"
+    step="0.1"
+    min="0"
+    max="5"
+  />
+
+  <button type="submit">Submit</button>
+</form>
