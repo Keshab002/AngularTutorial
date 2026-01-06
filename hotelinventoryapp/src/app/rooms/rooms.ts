@@ -17,11 +17,13 @@ import { RoomService } from './roomService/room-service';
 import { HttpEventType } from '@angular/common/http';
 import { catchError, Observable, shareReplay, Subject, Subscription } from 'rxjs';
 
+import { RouterOutlet } from '@angular/router';
+
 @Component({
   selector: 'app-rooms',
   templateUrl: './rooms.html',
   styleUrl: './rooms.scss',
-  imports: [CommonModule, RoomlistComponent, Header],
+  imports: [CommonModule, RoomlistComponent, Header, RouterOutlet],
 })
 export class Rooms implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy {
   hotelName: string = 'Angular Inn';

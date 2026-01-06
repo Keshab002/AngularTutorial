@@ -10,7 +10,7 @@ import { Init } from './init';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
+    provideRouter([...routes]),
     {
       provide: APP_SERVICE_CONFIG,
       useValue: APP_CONFIG,

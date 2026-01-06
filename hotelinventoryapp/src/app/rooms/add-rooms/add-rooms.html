@@ -1,24 +1,62 @@
-{{ newRoom | json }}
+<div>
+  {{ newRoom | json }}
+</div>
+
+@if(message !== ""){
 <div class="alert alert-success" role="alert">
   {{ message }}
 </div>
-<form (ngSubmit)="addRoom($event)">
+}
+
+<div>
+  <h3>Form Status</h3>
+</div>
+<div class="flex">
+  <div>{{ addRoomForm.pristine | json }} - PRISTINE</div>
+  <div>{{ addRoomForm.valid | json }} - VALID</div>
+  <div>{{ addRoomForm.invalid | json }} - INVALID</div>
+  <div>{{ addRoomForm.dirty | json }} - DIRTY</div>
+  <pre>
+    {{ addRoomForm.value | json }} - VALUE
+  </pre>
+</div>
+
+<form #addRoomForm="ngForm" (ngSubmit)="addRoom(addRoomForm)">
   <label for="roomNumber">Room Number</label>
-  <input type="text" id="roomNumber" [(ngModel)]="newRoom.roomNumber" name="roomNumber" />
+  <input required type="text" id="roomNumber" [(ngModel)]="newRoom.roomNumber" name="roomNumber" />
 
   <label for="roomType">Room Type</label>
-  <input type="text" id="roomType" [(ngModel)]="newRoom.roomType" name="roomType" />
+  <input required type="text" id="roomType" [(ngModel)]="newRoom.roomType" name="roomType" />
 
   <label for="amenities">Amenities</label>
-  <textarea id="amenities" [(ngModel)]="newRoom.amenities" name="amenities" rows="3"></textarea>
+  <textarea
+    #amentityForm="ngModel"
+    id="amenities"
+    minlength="5"
+    maxlength="20"
+    [(ngModel)]="newRoom.amenities"
+    name="amenities"
+    rows="3"
+    required
+  ></textarea>
+
+  @if(amentityForm.errors?.['minlength']) {
+  <div class="alert alert-danger">Amenities should be at least 5 characters long.</div>
+  } @if (addRoomForm.dirty && amentityForm.errors?.['required']) {
+  <div class="alert alert-danger">Amenities is required.</div>
+  }
+  <div>
+    {{ amentityForm.errors | json }}
+  </div>
 
   <label for="price">Price</label>
-  <input type="number" id="price" [(ngModel)]="newRoom.price" name="price" />
+  <input required type="number" id="price" [(ngModel)]="newRoom.price" name="price" />
 
   <label for="photos">Photo URL</label>
-  <input type="url" id="photos" [(ngModel)]="newRoom.photos" name="photos" />
+  <input required type="url" id="photos" [(ngModel)]="newRoom.photos" name="photos" />
   <label for="checkinTime">Check-in Time</label>
   <input
+    required
     type="datetime-local"
     id="checkinTime"
     [(ngModel)]="newRoom.checkinTime"
@@ -27,6 +65,7 @@
 
   <label for="checkoutTime">Check-out Time</label>
   <input
+    required
     type="datetime-local"
     id="checkoutTime"
     [(ngModel)]="newRoom.checkoutTime"
@@ -35,6 +74,7 @@
 
   <label for="rating">Rating</label>
   <input
+    required
     type="number"
     id="rating"
     [(ngModel)]="newRoom.rating"
@@ -44,5 +84,5 @@
     max="5"
   />
 
-  <button type="submit">Submit</button>
+  <button [disabled]="addRoomForm.invalid" type="submit">Submit</button>
 </form>

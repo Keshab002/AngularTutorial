@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { RoomList } from '../roomProperties';
 import { JsonPipe } from '@angular/common';
 import { RoomService } from '../roomService/room-service';
@@ -26,12 +26,12 @@ export class AddRooms {
 
   constructor(private roomService: RoomService, private cdr: ChangeDetectorRef) {}
 
-  addRoom(event: any) {
-    event.preventDefault();
+  addRoom(roomForm: NgForm) {
     console.log('Add Room form submitted');
     this.roomService.addRoom(this.newRoom).subscribe((data) => {
       this.cdr.markForCheck();
       this.message = `Room successfully added with Room Number: ${this.newRoom.roomNumber}`;
+      roomForm.resetForm();
     });
   }
 }

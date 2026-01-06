@@ -1,0 +1,47 @@
+<!-- Backdrop -->
+<div class="modal-backdrop"></div>
+
+<!-- Modal -->
+<div class="login-modal">
+  <div class="modal-header">
+    <h2>Welcome Back</h2>
+    <button class="close-btn" (click)="onClose()" aria-label="Close">&times;</button>
+  </div>
+
+  <form class="modal-body" (ngSubmit)="onLogin()">
+    <div class="form-group">
+      <label>Email</label>
+      <input
+        #emailInput="ngModel"
+        type="email"
+        placeholder="you@example.com"
+        required
+        [(ngModel)]="email"
+        name="email"
+        appHover
+        appEmailValidator
+      />
+    </div>
+    <div>
+      {{emailInput.errors | json}}
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input
+        type="password"
+        placeholder="••••••••"
+        required
+        [(ngModel)]="password"
+        name="password"
+        appHover
+      />
+    </div>
+
+    <button type="submit" class="login-btn">Login</button>
+
+    <p class="footer-text">
+      Don’t have an account?
+      <a href="#">Sign up</a>
+    </p>
+  </form>
+</div>

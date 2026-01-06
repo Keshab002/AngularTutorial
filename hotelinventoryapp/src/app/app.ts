@@ -1,24 +1,40 @@
-import { Component, signal, AfterViewInit, ViewChild, ViewContainerRef, OnInit, Optional, Inject } from '@angular/core';
-import { RouterOutlet, RouterLinkWithHref } from '@angular/router';
-import { Rooms } from "./rooms/rooms";
+import {
+  Component,
+  signal,
+  AfterViewInit,
+  ViewChild,
+  ViewContainerRef,
+  OnInit,
+  Optional,
+  Inject,
+} from '@angular/core';
+import {
+  RouterOutlet,
+  RouterLinkWithHref,
+  Router,
+  NavigationStart,
+  NavigationEnd,
+} from '@angular/router';
+import { Rooms } from './rooms/rooms';
 import { CommonModule } from '@angular/common';
-import { Container } from "./container/container";
-import { Employee } from "./employee/employee";
+import { Container } from './container/container';
+import { Employee } from './employee/employee';
 import { Logger } from './logger';
 import { localstorageToken } from './localstorage.token';
 import { Init } from './init';
-import { NavigationComponent } from "./navigation/navigation.component";
+import { NavigationComponent } from './navigation/navigation.component';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   imports: [CommonModule, NavigationComponent],
-    // Rooms, Container, Employee],
+  // Rooms, Container, Employee],
   templateUrl: './app.html',
   // Alternatively, you can use inline template
   // template: `<h1>Hello World</h1>
-  // <p>I am Learing Angular</p> 
+  // <p>I am Learing Angular</p>
   // <router-outlet></router-outlet>`,
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
   // Alternatively, you can use inline styles
   // styles: [`
   //   h1 {
@@ -30,10 +46,14 @@ import { NavigationComponent } from "./navigation/navigation.component";
 })
 export class App implements OnInit, AfterViewInit {
   protected readonly title = signal('hotelinventoryapp');
-  role : string = 'admin';
+  role: string = 'admin';
 
-  constructor(@Optional() private loggerService: Logger,@Inject(localstorageToken) private localstorage: Storage, private initService: Init) 
-  {
+  constructor(
+    @Optional() private loggerService: Logger,
+    @Inject(localstorageToken) private localstorage: Storage,
+    private initService: Init,
+    private router: Router
+  ) {
     console.log(initService.config, 'App component - config from Init service');
   }
   // Using @Optional() to handle the case where Logger service might not be provided
@@ -41,11 +61,20 @@ export class App implements OnInit, AfterViewInit {
   // Instead, loggerService will be null if Logger is not provided
 
   ngOnInit() {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationStart))
+      .subscribe((event) => {
+        console.log('Navigation Started');
+      });
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        console.log('Navigation Ended');
+      });
     this.loggerService?.log('App component initialized');
     this.localstorage?.setItem('role', this.role);
     // Using the injected localstorageToken to access localStorage
-    // we can use diredct localStorage as well but using InjectionToken makes it more testable and flexible
-
+    // we can use direct localStorage as well but using InjectionToken makes it more testable and flexible
   }
 
   // @ViewChild('admin', {read: ViewContainerRef}) adminContainer!: ViewContainerRef;

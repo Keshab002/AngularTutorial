@@ -2,6 +2,9 @@
 <!-- <h1>Welcome to Hotel {{ hotelName }}</h1> -->
 <app-header [title]="hotelName"></app-header>
 
+<router-outlet></router-outlet>
+<!-- under this my second page will be loaded -->
+
 <div [hidden]="hideRooms">
   <!-- Box Syntax -->
   Number of Rooms Available:
@@ -64,3 +67,4 @@
   <p>{{ error }}</p>
 </div>
 }
+
