@@ -24,7 +24,7 @@ export class RoomService {
     private httpClient: HttpClient
   ) {
     this.getRoomList$ = this.httpClient
-      .get<RoomList[]>('/api/rooms')
+      .get<RoomList[]>('/api/roomssadas')
       .pipe(shareReplay(1));
     console.log('RoomService initialized with API Endpoint:', this.appConfig.apiEndpoint);
   }

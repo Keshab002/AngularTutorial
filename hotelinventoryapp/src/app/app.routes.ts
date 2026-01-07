@@ -4,6 +4,7 @@ import { NotFound } from './not-found/not-found';
 import { Login } from './login/login';
 import { loginGuard } from './guards/login-guard';
 import { authMatchGuard } from './guards/auth-match-guard';
+import { Booking } from './booking/booking';
 
 export const routes: Routes = [
   {
@@ -13,18 +14,22 @@ export const routes: Routes = [
   {
     path: 'employees',
     component: Employee,
-    canActivate: [loginGuard],
+    // canActivate: [loginGuard],
   },
   {
     path: 'rooms',
     loadChildren: () => import('./rooms/rooms-routing-module').then((m) => m.Roomroutes),
-    canActivate: [loginGuard],
-    canMatch: [authMatchGuard]
+    // canActivate: [loginGuard],
+    // canMatch: [authMatchGuard]
   },
+  // {
+  //   path: '',
+  //   redirectTo: 'login',
+  //   pathMatch: 'full',
+  // },
   {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
+    path: 'booking',
+    component: Booking
   },
   {
     path: '**',

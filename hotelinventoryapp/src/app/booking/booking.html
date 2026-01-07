@@ -1,1 +1,197 @@
 <p>booking works!</p>
+<!-- <pre> -->
+{{ bookingForm.value | json }}
+<!-- </pre> -->
+{{ bookingForm.pristine }}
+{{ bookingForm.dirty }}
+
+<form [formGroup]="bookingForm" class="container mt-3">
+  <div class="d-flex gap-2 my-4">
+    <button type="button" class="btn btn-primary" (click)="addGuest()">Add Guest</button>
+    <button type="button" class="btn btn-primary" (click)="addPassport()">Add Passport</button>
+    <button type="button" class="btn btn-danger" (click)="RemovePassport()">Remove Passport</button>
+    <button type="submit" class="btn btn-primary">Submit Booking</button>
+  </div>
+
+  <div class="form-check">
+    <input type="checkbox" formControlName="tnc" class="form-check-input" id="tncCheck" />
+    <label class="form-label" for="tncCheck">TnC</label>
+  </div>
+
+  <!-- Room Id (disabled) -->
+  @if (bookingForm.get('passportNumber')) {
+  <div class="mb-3">
+    <label class="form-label">Passport Number</label>
+    <input type="text" class="form-control" formControlName="passportNumber" />
+  </div>
+
+  }
+
+  <div class="mb-3">
+    <label class="form-label">Room Id</label>
+    <input type="text" class="form-control" formControlName="roomId" />
+  </div>
+
+  <!-- Guest Email -->
+  <div class="mb-3">
+    <label class="form-label">Guest Email</label>
+    <input
+      type="email"
+      class="form-control"
+      formControlName="guestEmail"
+      placeholder="Enter guest email"
+      [class.is-invalid]="
+        bookingForm.get('guestEmail')?.invalid && bookingForm.get('guestEmail')?.touched
+      "
+    />
+    @if(bookingForm.get('guestEmail')?.errors?.['required'] &&
+    bookingForm.get('guestEmail')?.touched) {
+    <div class="invalid-feedback">Email is required.</div>
+    } @if(bookingForm.get('guestEmail')?.errors?.['email'] &&
+    bookingForm.get('guestEmail')?.touched) {
+    <div class="invalid-feedback">Enter a valid email.</div>
+    }
+  </div>
+
+  <!-- Dates -->
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Check-in Date</label>
+      <input type="date" class="form-control" formControlName="checkInDate" />
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Check-out Date</label>
+      <input type="date" class="form-control" formControlName="checkOutDate" />
+    </div>
+  </div>
+
+  <!-- Booking Status -->
+  <div class="mb-3">
+    <label class="form-label">Booking Status</label>
+    <select class="form-select" formControlName="bookingStatus">
+      <option value="">Select status</option>
+      <option value="confirmed">Confirmed</option>
+      <option value="pending">Pending</option>
+      <option value="cancelled">Cancelled</option>
+    </select>
+  </div>
+
+  <!-- Amount & Mobile -->
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Booking Amount</label>
+      <input type="number" class="form-control" formControlName="bookingAmount" />
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Mobile Number</label>
+      <input type="tel" class="form-control" formControlName="mobileNumber" />
+    </div>
+  </div>
+
+  <!-- Guest Name -->
+  <div class="mb-3">
+    <label class="form-label">Guest Name</label>
+    <input type="text" class="form-control" formControlName="guestName" />
+  </div>
+
+  <!-- 🔽 Address Accordion (Material-like expansion) -->
+  <mat-expansion-panel hideToggle class="my-3">
+    <mat-expansion-panel-header class="h-25">
+      <div class="card-header py-3">
+        <strong>Address Details</strong>
+      </div>
+    </mat-expansion-panel-header>
+    <div class="card-body" formGroupName="address">
+      <!-- Address -->
+      <div class="row mb-3">
+        <div class="col-12">
+          <label class="form-label">Address</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="Address"
+            placeholder="Enter address"
+          />
+        </div>
+      </div>
+
+      <!-- City / State -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label class="form-label">City</label>
+          <input type="text" class="form-control" formControlName="City" />
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">State</label>
+          <input type="text" class="form-control" formControlName="State" />
+        </div>
+      </div>
+
+      <!-- Country / Zip -->
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Country</label>
+          <input type="text" class="form-control" formControlName="Country" />
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Zip Code</label>
+          <input type="text" class="form-control" formControlName="ZipCode" />
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+
+  <!-- Guest Count -->
+  <div class="mb-3">
+    <label class="form-label">Guest Count</label>
+    <input type="number" class="form-control" formControlName="guestCount" />
+  </div>
+
+  <!-- Guest List (FormArray placeholder) -->
+  <mat-expansion-panel hideToggle class="my-2">
+    <mat-expansion-panel-header class="h-25">
+      <div class="pt-2">
+        <label class="form-label fw-bold"
+          >Guest List
+          <div class="text-muted small">Dynamic guest list will be added here</div>
+        </label>
+      </div>
+    </mat-expansion-panel-header>
+
+    <div formArrayName="guestList" class="mb-3">
+      @for (guest of guestList.controls; let i = $index; track i) {
+      <div [formGroupName]="i" class="border p-2 mb-2">
+        <label class="form-label">Guest {{ i + 1 }}</label>
+        <div>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="guestName"
+            placeholder="Guest Name"
+            [class.is-invalid]="
+              guestList.at(i).get('guestName')?.touched && guestList.at(i).get('guestName')?.invalid
+            "
+          />
+
+          @if ( guestList.at(i).get('guestName')?.touched) {
+          <div class="invalid-feedback">Guest name is required.</div>
+          }
+        </div>
+        <input
+          type="number"
+          class="form-control mt-2"
+          formControlName="guestAge"
+          placeholder="Guest Age"
+        />
+        <button type="button" class="btn btn-danger mt-2" (click)="removeGuest(i)">
+          Remove Guest
+        </button>
+      </div>
+      }
+    </div>
+  </mat-expansion-panel>
+</form>
